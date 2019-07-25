@@ -17,4 +17,19 @@
     <string name="subtract">-</string>
     <string name="add">+</string>
     <string name="equals">=</string>
+    <string name="inv">INV</string>
+    <string name="sin">sin</string>
+    <string name="ln">ln</string>
+    <string name="pi">π</string>
+    <string name="left_parenthesis">(</string>
+    <string name="rad">RAD</string>
+    <string name="cos">cos</string>
+    <string name="log">log</string>
+    <string name="e">e</string>
+    <string name="right_parenthesis">)</string>
+    <string name="percent">%</string>
+    <string name="square_root">√</string>
+    <string name="power">^</string>
+    <string name="permutation">!</string>
+    <string name="tan">tan</string>
 </resources>
