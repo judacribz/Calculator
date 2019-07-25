@@ -14,8 +14,11 @@ public class MainActivity extends AppCompatActivity {
     final private static char ADD = '+';
     final private static char SUBTRACT = '-';
     final private static char EQUALS = '=';
+    final private static char DECIMAL = '.';
 
     TextView tvCalculations, tvAnswer;
+    Button btnDelete;
+
     StringBuilder sb;
 
     boolean lastCharIsDigit = false;
@@ -31,43 +34,78 @@ public class MainActivity extends AppCompatActivity {
 
         tvCalculations = findViewById(R.id.tvCalculations);
         tvAnswer = findViewById(R.id.tvAnswer);
+        btnDelete = findViewById(R.id.btnDelete);
+
+
         sb = new StringBuilder();
     }
 
+    public void setTvCalculations() {
+        tvCalculations.setText(sb);
+    }
 
-    public void appendToCalculation(String calcAppendStr) {
-        sb.append(calcAppendStr);
+    public void calculate() {
 
-        if (sb.toString().contains(String.valueOf(operator)) && lastCharIsDigit) {
+        if (containsOperator && lastCharIsDigit) {
+
             String[] nums = sb.toString().split(String.valueOf(operator));
             num1 = Double.valueOf(nums[0]);
             num2 = Double.valueOf(nums[1]);
 
+
             switch (operator) {
                 case DIVIDE:
-                    ans = num1/num2;
+                    ans = num1 / num2;
                     break;
                 case MULTIPLY:
-                    ans = num1*num2;
+                    ans = num1 * num2;
                     break;
                 case ADD:
-                    ans = num1+num2;
+                    ans = num1 + num2;
                     break;
                 case SUBTRACT:
-                    ans = num1-num2;
+                    ans = num1 - num2;
                     break;
             }
 
             tvAnswer.setText(String.valueOf(ans));
+
+        } else {
+            tvAnswer.setText("");
         }
-        tvCalculations.setText(sb.toString());
     }
 
-    public void deleteFromCalculation(View view) {
-        if (!sb.toString().isEmpty()) {
-
-            tvCalculations.setText(sb.toString());
+    public void appendToCalculation(String calcAppendStr) {
+        if (!btnDelete.isEnabled()) {
+            btnDelete.setEnabled(true);
         }
+
+        sb.append(calcAppendStr);
+        calculate();
+
+        setTvCalculations();
+    }
+
+
+    public void deleteFromCalculation(View view) {
+        int strLen = sb.length();
+        sb.deleteCharAt(strLen - 1);
+        setTvCalculations();
+
+        if (strLen == 1) {
+            btnDelete.setEnabled(false);
+        } else {
+//            setBooleans();
+            if (!sb.toString().contains(String.valueOf(operator))) {
+                containsOperator = false;
+            }
+
+            if (sb.charAt(sb.length()-1) == operator) {
+                lastCharIsDigit = false;
+            }
+        }
+
+        calculate();
     }
 
     public void handleNumClick(View btnNum) {
@@ -78,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
     public void handleOpClick(View btnOperator) {
         if (!containsOperator) {
 
-            if (!(sb.toString()).isEmpty() && lastCharIsDigit) {
+
+            if (!sb.toString().isEmpty() && lastCharIsDigit) {
                 operator = ((Button) btnOperator).getText().toString().charAt(0);
                 lastCharIsDigit = false;
                 containsOperator = true;
